@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESGAR 2026 Rectal MRI Restaging Module</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --title-color: #111111;
+            --border-color: #cccccc;
+            --panel-bg: #f9f9f9;
+            --accent-color: #0277bd;
+            --warning-bg: #e1f5fe;
+            --warning-border: #0288d1;
+            --warning-text: #01579b;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --title-color: #4fc3f7;
+            --border-color: #444444;
+            --panel-bg: #111111;
+            --accent-color: #29b6f6;
+            --warning-bg: #0d1b2a;
+            --warning-border: #4fc3f7;
+            --warning-text: #e0f7fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--title-color);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        h2 {
+            color: var(--title-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        select, button, input[type="text"], input[type="number"], textarea {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        button {
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--panel-bg);
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: calc(100vh - 180px);
+            min-height: 500px;
+        }
+
+        .column-left {
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .column-right {
+            border-left: 2px dashed var(--border-color);
+            padding-left: 20px;
+            overflow-y: auto;
+            background-color: var(--panel-bg);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            line-height: 1.3;
+        }
+
+        .checkbox-label input {
+            margin-top: 3px;
+        }
+
+        .nested {
+            margin-left: 25px;
+        }
+
+        .input-inline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .input-inline input {
+            width: 80px;
+        }
+
+        .text-free {
+            width: 100%;
+            margin-top: 10px;
+            resize: vertical;
+        }
+
+        .warning-box {
+            background-color: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            color: var(--warning-text);
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .output-container {
+            grid-column: span 2;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .output-textarea {
+            width: 100%;
+            height: 150px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 15px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="lbl-title">RM de Recto: Reestudio post-neoadyuvancia (ESGAR 2026)</h1>
+        <div class="controls">
+            <select id="lang-selector" onchange="changeLanguage()">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+                <option value="ca">Català</option>
+            </select>
+            <button id="theme-btn" onclick="toggleTheme()">Modo Oscuro</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="column-left">
+            <form id="esgar-form" oninput="generateReport()">
+                
+                <div class="form-section">
+                    <h2 id="sec-local">1. Estado Tumoral Local</h2>
+                    
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="radio" name="likelihood" value="cCR" onclick="handleResponseChange()">
+                            <span id="opt-ccr">Respuesta clínica completa (cCR) [Fibrosis homogénea, sin restricción focal]</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="radio" name="likelihood" value="near-cCR" onclick="handleResponseChange()">
+                            <span id="opt-near-ccr">Respuesta clínica casi completa (near-cCR) [Fibrosis predominantemente homogénea, con/sin pequeños focos de restricción]</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="radio" name="likelihood" value="minor" onclick="handleResponseChange()">
+                            <span id="opt-minor">Residuo tumoral menor [Fibrosis heterogénea con señal tumoral intermedia ± restricción focal]</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="radio" name="likelihood" value="major" onclick="handleResponseChange()">
+                            <span id="opt-major">Residuo tumoral mayor [Masa sólida persistente con restricción a la difusión]</span>
+                        </label>
+                    </div>
+
+                    <div id="esgar-warning" class="warning-box">
+                        ⚠️ <strong>ESGAR 2026:</strong> En caso de cCR o near-cCR, no se recomienda desglosar la categoría ycT por falta de implicación clínica y riesgo de confusión. El bloque ycT ha sido ocultado automáticamente.
+                    </div>
+
+                    <div id="yct-block">
+                        <h3 id="sub-yct" style="font-size:1rem; margin-bottom:8px;">Categoría ycT estimada:</h3>
+                        <div class="checkbox-group nested">
+                            <label class="checkbox-label"><input type="radio" name="yct" value="ycT1-2"> <span>ycT1-2</span></label>
+                            <label class="checkbox-label"><input type="radio" name="yct" value="ycT3ab"> <span id="opt-yct3ab">ycT3ab (≤5 mm de crecimiento extramural)</span></label>
+                            <label class="checkbox-label"><input type="radio" name="yct" value="ycT3cd"> <span id="opt-yct3cd">ycT3cd (>5 mm de crecimiento extramural)</span></label>
+                            <label class="checkbox-label"><input type="radio" name="yct" value="ycT4a"> <span id="opt-yct4a">ycT4a (invade peritoneo o reflexión peritoneal)</span></label>
+                            <label class="checkbox-label"><input type="radio" name="yct" value="ycT4b"> <span id="opt-yct4b">ycT4b (en base a invasión de órgano adyacente)</span></label>
+                        </div>
+                    </div>
+
+                    <h3 id="sub-mucinous" style="font-size:1rem; margin-bottom:8px;">Componente mucinoso:</h3>
+                    <div class="checkbox-group nested">
+                        <label class="checkbox-label"><input type="radio" name="mucinous" value="no" checked> <span id="opt-muc-no">No</span></label>
+                        <label class="checkbox-label"><input type="radio" name="mucinous" value="remnant"> <span id="opt-muc-rem">Sí, remanente mucinoso de tumor primario mucinoso</span></label>
+                        <label class="checkbox-label"><input type="radio" name="mucinous" value="transformation"> <span id="opt-muc-trans">Sí, transformación mucinosa de tumor primario sólido</span></label>
+                    </div>
+
+                    <div class="input-inline" style="margin-top:15px;">
+                        <span id="lbl-dist">Distancia desde la unión anorrectal al borde inferior del resto lesional (incluyendo fibrosis):</span>
+                        <input type="number" id="dist-fibrosis" step="0.1"> cm
+                    </div>
+                    <div class="input-inline">
+                        <span id="lbl-size-fib">Tamaño de la lesión remanente (incluyendo fibrosis):</span>
+                        <input type="number" id="size-fibrosis" step="0.1"> cm
+                    </div>
+                    <div class="input-inline">
+                        <span id="lbl-size-tum">Tamaño estimado del tumor residual dentro de la fibrosis:</span>
+                        <input type="number" id="size-tumor" step="0.1"> cm
+                    </div>
+
+                    <h3 id="sub-ycemvi" style="font-size:1rem; margin-bottom:8px;">ycEMVI (Invasión vascular extramural):</h3>
+                    <div class="checkbox-group nested">
+                        <label class="checkbox-label"><input type="radio" name="ycemvi" value="no"> <span id="opt-emvi-no">No (sin EMVI en basal o desaparición de la misma)</span></label>
+                        <label class="checkbox-label"><input type="radio" name="ycemvi" value="yes"> <span id="opt-emvi-yes">Sí (señal tumoral sospechosa persistente en el sitio de EMVI primaria)</span></label>
+                    </div>
+
+                    <h3 id="sub-sphincter" style="font-size:1rem; margin-bottom:8px;">Invasión del esfínter:</h3>
+                    <div class="checkbox-group nested">
+                        <label class="checkbox-label"><input type="checkbox" id="sph-no"> <span id="opt-sph-no">No</span></label>
+                        <label class="checkbox-label"><input type="checkbox" id="sph-inter"> <span id="opt-sph-inter">Espacio interesfintérico</span></label>
+                        <label class="checkbox-label"><input type="checkbox" id="sph-internal"> <span id="opt-sph-internal">Esfínter interno</span></label>
+                        <label class="checkbox-label"><input type="checkbox" id="sph-external"> <span id="opt-sph-external">Esfínter externo (=ycT4b)</span></label>
+                    </div>
+
+                    <textarea id="text-local" class="text-free" rows="2" placeholder="Texto libre / Comentarios de Estado Local..."></textarea>
+                </div>
+
+                <div class="form-section">
+                    <h2 id="sec-mrf">2. Afectación de la Fascia Mesorrectal (ycMRF)</h2>
+                    <p style="font-size:0.85rem; font-style:italic;" id="lbl-mrf-def">Margen menor o igual a 1 mm</p>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label"><input type="radio" name="ycmrf" value="no"> <span id="opt-mrf-no">No afectado (Cleared / uninvolved ycMRF-)</span></label>
+                        <label class="checkbox-label"><input type="radio" name="ycmrf" value="yes"> <span id="opt-mrf-yes">Sí, afectado por:</span></label>
+                        <div class="checkbox-group nested">
+                            <label class="checkbox-label"><input type="checkbox" id="mrf-tumor"> <span id="opt-mrf-tum">Tumor residual</span></label>
+                            <label class="checkbox-label"><input type="checkbox" id="mrf-fibrosis"> <span id="opt-mrf-fib">Fibrosis con potencial tumor residual</span></label>
+                            <label class="checkbox-label"><input type="checkbox" id="mrf-emvi"> <span id="opt-mrf-emvi">EMVI persistente</span></label>
+                            <label class="checkbox-label"><input type="checkbox" id="mrf-deposit"> <span id="opt-mrf-dep">Depósito tumoral o ganglio linfático irregular persistente</span></label>
+                        </div>
+                    </div>
+                    <div class="input-inline">
+                        <span id="lbl-mrf-clock">Localización horaria de la afectación persistente:</span>
+                        <input type="text" id="mrf-clock" placeholder="e.g. 3"> <span id="lbl-clock-unit">en punto</span>
+                    </div>
+
+                    <textarea id="text-mrf" class="text-free" rows="2" placeholder="Texto libre / Comentarios de ycMRF..."></textarea>
+                </div>
+
+                <div class="form-section">
+                    <h2 id="sec-nodes">3. Ganglios Linfáticos y Depósitos Tumorales</h2>
+                    
+                    <h3 id="sub-meso-nodes" style="font-size:1rem; margin-bottom:8px;">Ganglios mesorrectales:</h3>
+                    <div class="checkbox-group nested">
+                        <label class="checkbox-label"><input type="radio" name="meso_nodes" value="ycN0"> <span id="opt-meso-n0">ycN0 (Sin ganglios remanentes o solo ganglios < 5 mm de eje corto)</span></label>
+                        <label class="checkbox-label"><input type="radio" name="meso_nodes" value="possible_ycN"> <span id="opt-meso-npos">Posible ycN+ (Cualquier ganglio con eje corto ≥ 5 mm o señal mucinosa)</span></label>
+                    </div>
+
+                    <h3 id="sub-lat-nodes" style="font-size:1rem; margin-bottom:8px;">Ganglios laterales (obturadores / ilíacos internos):</h3>
+                    <div class="checkbox-group nested">
+                        <label class="checkbox-label"><input type="radio" name="lat_nodes" value="na"> <span id="opt-lat-na">N/A (Sin ganglios laterales sospechosos en el estudio basal)</span></label>
+                        <label class="checkbox-label"><input type="radio" name="lat_nodes" value="enlarged"> <span id="opt-lat-enl">Ganglios previamente aumentados de tamaño:</span></label>
+                        <div class="input-inline nested">
+                            <span id="lbl-lat-curr">Tamaño actual:</span> <input type="number" id="lat-current-size" step="0.1"> mm | 
+                            <span id="lbl-lat-basal">Basal:</span> <input type="number" id="lat-basal-size" step="0.1"> mm
+                        </div>
+                    </div>
+
+                    <h3 id="sub-td" style="font-size:1rem; margin-bottom:8px;">Depósitos tumorales persistentes (TD):</h3>
+                    <div class="checkbox-group nested">
+                        <label class="checkbox-label"><input type="radio" name="td" value="no"> <span id="opt-td-no">No</span></label>
+                        <label class="checkbox-label"><input type="radio" name="td" value="yes"> <span id="opt-td-yes">Sí:</span></label>
+                        <div class="input-inline nested">
+                            <span id="lbl-td-num">Número:</span> <input type="number" id="td-number"> | 
+                            <span id="lbl-td-size">Tamaño:</span> <input type="number" id="td-size" step="0.1"> mm
+                        </div>
+                    </div>
+
+                    <h3 id="sub-yc-cat" style="font-size:1rem; margin-bottom:8px;">Categoría ycN estimada final:</h3>
+                    <div class="checkbox-group nested">
+                        <label class="checkbox-label"><input type="radio" name="yc_cat" value="ycN0"> <span>ycN0</span></label>
+                        <label class="checkbox-label"><input type="radio" name="yc_cat" value="possibly_ycN"> <span id="opt-cat-pos">Posiblemente ycN+</span></label>
+                        <label class="checkbox-label"><input type="radio" name="yc_cat" value="ycN"> <span>ycN+</span></label>
+                    </div>
+
+                    <h3 id="sub-m1-nodes" style="font-size:1rem; margin-bottom:8px;">Ganglios no regionales (Categoría cM):</h3>
+                    <div class="checkbox-group nested">
+                        <label class="checkbox-label"><input type="radio" name="m1_nodes" value="na"> <span id="opt-m1-na">N/A (Sin adenopatías no regionales sospechosas en el basal)</span></label>
+                        <label class="checkbox-label"><input type="radio" name="m1_nodes" value="enlarged"> <span id="opt-m1-enl">Ganglios previamente aumentados (ilíacos externos/comunes o inguinales):</span></label>
+                        <div class="input-inline nested">
+                            <span id="lbl-m1-curr">Tamaño actual:</span> <input type="number" id="m1-current-size" step="0.1"> mm | 
+                            <span id="lbl-m1-basal">Basal:</span> <input type="number" id="m1-basal-size" step="0.1"> mm
+                        </div>
+                    </div>
+
+                    <textarea id="text-nodes" class="text-free" rows="2" placeholder="Texto libre / Comentarios de Ganglios y Depósitos..."></textarea>
+                </div>
+
+                <div class="form-section">
+                    <h2 id="sec-others">4. Otros Hallazgos</h2>
+                    <textarea id="text-others" class="text-free" rows="3" placeholder="Texto libre para otros hallazgos clínicos relevantes..."></textarea>
+                </div>
+            </form>
+        </div>
+
+        <div class="column-right">
+            <h2 id="sec-help" style="margin-top:0;">Ayuda al Radiólogo</h2>
+            <p style="font-size:0.95rem; line-height:1.4;" id="lbl-help-placeholder">
+                [Espacio reservado para material de ayuda seleccionado en el segundo tiempo. Aquí se integrarán los criterios analíticos, mapas ADC y algoritmos decisionales para la estrategia Watch-and-Wait].
+            </p>
+        </div>
+
+        <div class="output-container">
+            <h2 id="sec-preview" style="margin:0;">Vista Previa del Informe de Texto Plano</h2>
+            <textarea id="report-output" class="output-textarea" readonly></textarea>
+            <div class="actions-bar">
+                <button id="btn-copy" onclick="copyToClipboard()" style="background-color: var(--accent-color); color: white; border: none;">Copiar al Portapapeles</button>
+                <button id="btn-reset" onclick="resetForm()">Reiniciar Módulo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Diccionario de Traducciones Integrado
+        const translations = {
+            es: {
+                title: "RM de Recto: Reestudio post-neoadyuvancia (ESGAR 2026)",
+                themeBtnDark: "Modo Oscuro",
+                themeBtnLight: "Modo Claro",
+                secLocal: "1. Estado Tumoral Local",
+                optCcr: "Respuesta clínica completa (cCR) [Fibrosis homogénea, sin restricción focal]",
+                optNearCcr: "Respuesta clínica casi completa (near-cCR) [Fibrosis predominantemente homogénea, con/sin pequeños focos de restricción]",
+                optMinor: "Residuo tumoral menor [Fibrosis heterogénea con señal tumoral intermedia ± restricción focal]",
+                optMajor: "Residuo tumoral mayor [Masa sólida persistente con restricción a la difusión]",
+                warning: "⚠️ ESGAR 2026: En caso de cCR o near-cCR, no se recomienda desglosar la categoría ycT por falta de implicación clínica y riesgo de confusión. El bloque ycT ha sido ocultado automáticamente.",
+                subYct: "Categoría ycT estimada:",
+                optYct3ab: "ycT3ab (≤5 mm de crecimiento extramural)",
+                optYct3cd: "ycT3cd (>5 mm de crecimiento extramural)",
+                optYct4a: "ycT4a (invade peritoneo o reflexión peritoneal)",
+                optYct4b: "ycT4b (en base a invasión de órgano adyacente)",
+                subMucinous: "Componente mucinoso:",
+                optMucNo: "No",
+                optMucRem: "Sí, remanente mucinoso de tumor primario mucinoso",
+                optMucTrans: "Sí, transformación mucinosa de tumor primario sólido",
+                lblDist: "Distancia desde la unión anorrectal al borde inferior del resto lesional (incluyendo fibrosis):",
+                lblSizeFib: "Tamaño de la lesión remanente (incluyendo fibrosis):",
+                lblSizeTum: "Tamaño estimado del tumor residual dentro de la fibrosis:",
+                subYcemvi: "ycEMVI (Invasión vascular extramural):",
+                optEmviNo: "No (sin EMVI en basal o desaparición de la misma)",
+                optEmviYes: "Sí (señal tumoral sospechosa persistente en el sitio de EMVI primaria)",
+                subSphincter: "Invasión del esfínter:",
+                optSphNo: "No",
+                optSphInter: "Espacio interesfintérico",
+                optSphInternal: "Esfínter interno",
+                optSphExternal: "Esfínter externo (=ycT4b)",
+                secMrf: "2. Afectación de la Fascia Mesorrectal (ycMRF)",
+                lblMrfDef: "Margen menor o igual a 1 mm",
+                optMrfNo: "No afectado (Cleared / uninvolved ycMRF-)",
+                optMrfYes: "Sí, afectado por:",
+                optMrfTum: "Tumor residual",
+                optMrfFib: "Fibrosis con potencial tumor residual",
+                optMrfEmvi: "EMVI persistente",
+                optMrfDep: "Depósito tumoral o ganglio linfático irregular persistente",
+                lblMrfClock: "Localización horaria de la afectación persistente:",
+                lblClockUnit: "en punto",
+                secNodes: "3. Ganglios Linfáticos y Depósitos Tumorales",
+                subMesoNodes: "Ganglios mesorrectales:",
+                optMesoN0: "ycN0 (Sin ganglios remanentes o solo ganglios < 5 mm de eje corto)",
+                optMesoNpos: "Posible ycN+ (Cualquier ganglio con eje corto ≥ 5 mm o señal mucinosa)",
+                subLatNodes: "Ganglios laterales (obturadores / ilíacos internos):",
+                optLatNa: "N/A (Sin ganglios laterales sospechosos en el estudio basal)",
+                optLatEnl: "Ganglios previamente aumentados de tamaño:",
+                lblLatCurr: "Tamaño actual:",
+                lblLatBasal: "Basal:",
+                subTd: "Depósitos tumorales persistentes (TD):",
+                optTdNo: "No",
+                optTdYes: "Sí:",
+                lblTdNum: "Número:",
+                lblTdSize: "Tamaño:",
+                subYcCat: "Categoría ycN estimada final:",
+                optCatPos: "Posiblemente ycN+",
+                subM1Nodes: "Ganglios no regionales (Categoría cM):",
+                optM1Na: "N/A (Sin adenopatías no regionales sospechosas en el basal)",
+                optM1Enl: "Ganglios previamente aumentados (ilíacos externos/comunes o inguinales):",
+                lblM1Curr: "Tamaño actual:",
+                lblM1Basal: "Basal:",
+                secOthers: "4. Otros Hallazgos",
+                secHelp: "Ayuda al Radiólogo",
+                lblHelpPlaceholder: "[Espacio reservado para material de ayuda seleccionado en el segundo tiempo. Aquí se integrarán los criterios analíticos, mapas ADC y algoritmos decisionales para la estrategia Watch-and-Wait].",
+                secPreview: "Vista Previa del Informe de Texto Plano",
+                btnCopy: "Copiar al Portapapeles",
+                btnReset: "Reiniciar Módulo",
+                repHeader: "INFORME DE RM DE RECTO (REESTUDIO POST-NEOADYUVANCIA - ESGAR 2026)\n=============================================================",
+                repLocal: "\n1. ESTADO TUMORAL LOCAL:",
+                repMrf: "\n2. FASCIA MESORRECTAL (ycMRF):",
+                repNodes: "\n3. GANGLIOS LINFÁTICOS Y DEPÓSITOS TUMORALES:",
+                repOthers: "\n4. OTROS HALLAZGOS:"
+            },
+            en: {
+                title: "Rectal MRI: Post-Neoadjuvant Restaging (ESGAR 2026)",
+                themeBtnDark: "Dark Mode",
+                themeBtnLight: "Light Mode",
+                secLocal: "1. Local Tumor Status",
+                optCcr: "Clinical complete response (cCR) [Homogeneous fibrosis, absence of focal diffusion restriction]",
+                optNearCcr: "Near clinical complete response (near-cCR) [Predominantly homogeneous fibrosis, with/without small foci of diffusion restriction]",
+                optMinor: "Minor residual tumor [Heterogeneous fibrosis with intermediate tumor signal ± focal diffusion restriction]",
+                optMajor: "Major residual tumor [Persistent solid mass with diffusion restriction]",
+                warning: "⚠️ ESGAR 2026: In case of suspected cCR or near-cCR, detailed reporting of the ycT-category is not recommended due to unreliability and limited clinical implications. The ycT block is hidden.",
+                subYct: "Estimated ycT-category:",
+                optYct3ab: "ycT3ab (≤5 mm extramural growth)",
+                optYct3cd: "ycT3cd (>5 mm extramural growth)",
+                optYct4a: "ycT4a (invading peritoneum or peritoneal reflection)",
+                optYct4b: "ycT4b (based on invasion of adjacent organ)",
+                subMucinous: "Mucinous component:",
+                optMucNo: "No",
+                optMucRem: "Yes, mucinous remnant of primarily mucinous tumor",
+                optMucTrans: "Yes, mucinous transformation of primarily solid tumor",
+                lblDist: "Distance from anorectal junction to lower border of remnant lesion (incl. fibrosis):",
+                lblSizeFib: "Size of remnant lesion (incl. fibrosis):",
+                lblSizeTum: "Estimated size of residual tumor within fibrosis:",
+                subYcemvi: "ycEMVI (Extramural vascular invasion):",
+                optEmviNo: "No (no EMVI at baseline or disappearance of EMVI)",
+                optEmviYes: "Yes (persistent suspected tumor signal at site of primary EMVI)",
+                subSphincter: "Sphincter invasion:",
+                optSphNo: "No",
+                optSphInter: "Intersphincteric space",
+                optSphInternal: "Internal sphincter",
+                optSphExternal: "External sphincter (=ycT4b)",
+                secMrf: "2. Mesorectal Fascia (ycMRF) Involvement",
+                lblMrfDef: "Margin less than or equal to 1 mm",
+                optMrfNo: "Uninvolved (Cleared / uninvolved ycMRF-)",
+                optMrfYes: "Yes, involved by:",
+                optMrfTum: "Residual tumor",
+                optMrfFib: "Fibrosis with potential residual tumor",
+                optMrfEmvi: "Persistent EMVI",
+                optMrfDep: "Persistent irregular lymph node/tumor deposit",
+                lblMrfClock: "Clock-face location of persistent involvement:",
+                lblClockUnit: "o'clock",
+                secNodes: "3. Lymph Nodes and Tumor Deposits",
+                subMesoNodes: "Mesorectal lymph nodes:",
+                optMesoN0: "ycN0 (No remaining nodes or only nodes < 5 mm short axis)",
+                optMesoNpos: "Possibly ycN+ (Any remaining nodes with short axis ≥ 5 mm or mucinous signal)",
+                subLatNodes: "Lateral lymph nodes (obturator / internal iliac):",
+                optLatNa: "N/A (No suspicious lateral nodes at baseline)",
+                optLatEnl: "Previously enlarged nodes:",
+                lblLatCurr: "Current size:",
+                lblLatBasal: "Baseline:",
+                subTd: "Persistent tumor deposits (TD):",
+                optTdNo: "No",
+                optTdYes: "Yes:",
+                lblTdNum: "Number:",
+                lblTdSize: "Size:",
+                subYcCat: "Estimated final ycN-category:",
+                optCatPos: "Possibly ycN+",
+                subM1Nodes: "Non-regional lymph nodes (cM category):",
+                optM1Na: "N/A (No suspicious non-regional nodes at baseline)",
+                optM1Enl: "Previously enlarged nodes (external/common iliac or inguinal):",
+                lblM1Curr: "Current size:",
+                lblM1Basal: "Baseline:",
+                secOthers: "4. Other Findings",
+                secHelp: "Radiologist Support",
+                lblHelpPlaceholder: "[Space reserved for support materials selected in the second phase. Decisional algorithms for Watch-and-Wait, ADC maps, and analytical metrics will be placed here].",
+                secPreview: "Plain Text Report Preview",
+                btnCopy: "Copy to Clipboard",
+                btnReset: "Reset Form",
+                repHeader: "RECTAL MRI REPORT (POST-NEOADJUVANT RESTAGING - ESGAR 2026)\n=============================================================",
+                repLocal: "\n1. LOCAL TUMOR STATUS:",
+                repMrf: "\n2. MESORECTAL FASCIA (ycMRF):",
+                repNodes: "\n3. LYMPH NODES AND TUMOR DEPOSITS:",
+                repOthers: "\n4. OTHER FINDINGS:"
+            },
+            ca: {
+                title: "RM de Recte: Reestudi post-neoadjuvància (ESGAR 2026)",
+                themeBtnDark: "Mode Fosc",
+                themeBtnLight: "Mode Clar",
+                secLocal: "1. Estat Tumoral Local",
+                optCcr: "Resposta clínica completa (cCR) [Fibrosi homogènia, sense restricció focal]",
+                optNearCcr: "Resposta clínica gairebé completa (near-cCR) [Fibrosi predominantment homogènia, amb/sense petits focs de restricció]",
+                optMinor: "Residu tumoral menor [Fibrosi heterogènia amb senyal tumoral intermèdia ± restricció focal]",
+                optMajor: "Residu tumoral major [Massa sòlida persistent amb restricció a la difusió]",
+                warning: "⚠️ ESGAR 2026: En cas de cCR o near-cCR, no es recomana desglossar la categoria ycT per manca d'implicació clínica i risc de confusió. El bloc ycT s'ha ocultat automàticament.",
+                subYct: "Categoria ycT estimada:",
+                optYct3ab: "ycT3ab (≤5 mm de creixement extramural)",
+                optYct3cd: "ycT3cd (>5 mm de creixement extramural)",
+                optYct4a: "ycT4a (envaeix peritoneu o reflexió peritoneal)",
+                optYct4b: "ycT4b (en base a invasió d'òrgan adjacent)",
+                subMucinous: "Component mucinós:",
+                optMucNo: "No",
+                optMucRem: "Sí, remanent mucinós de tumor primari mucinós",
+                optMucTrans: "Sí, transformació mucinosa de tumor primario sòlid",
+                lblDist: "Distància des de la unió anorrectal al vora inferior de la resta lesional (incloent fibrosi):",
+                lblSizeFib: "Mida de la lesió remanent (incloent fibrosi):",
+                lblSizeTum: "Mida estimada del tumor residual dins de la fibrosi:",
+                subYcemvi: "ycEMVI (Invasió vascular extramural):",
+                optEmviNo: "No (sense EMVI en basal o desaparició de la mateixa)",
+                optEmviYes: "Sí (senyal tumoral sospitosa persistent al lloc d'EMVI primària)",
+                subSphincter: "Invasió de l'esfínter:",
+                optSphNo: "No",
+                optSphInter: "Espai interesfinterià",
+                optSphInternal: "Esfínter intern",
+                optSphExternal: "Esfínter extern (=ycT4b)",
+                secMrf: "2. Afectació de la Fàscia Mesorrectal (ycMRF)",
+                lblMrfDef: "Marge menor o igual a 1 mm",
+                optMrfNo: "No afectat (Cleared / uninvolved ycMRF-)",
+                optMrfYes: "Sí, afectat per:",
+                optMrfTum: "Tumor residual",
+                optMrfFib: "Fibrosi amb potencial tumor residual",
+                optMrfEmvi: "EMVI persistent",
+                optMrfDep: "Dipòsit tumoral o gangli limfàtic irregular persistent",
+                lblMrfClock: "Localització horària de l'afectació persistent:",
+                lblClockUnit: "en punt",
+                secNodes: "3. Ganglis Limfàtics i Dipòsits Tumorals",
+                subMesoNodes: "Ganglis mesorrectals:",
+                optMesoN0: "ycN0 (Sense ganglis remanents o només ganglis < 5 mm d'eix curt)",
+                optMesoNpos: "Possible ycN+ (Qualsevol gangli amb eix curt ≥ 5 mm o senyal mucinosa)",
+                subLatNodes: "Ganglis laterals (obturadors / ilíacs interns):",
+                optLatNa: "N/A (Sense ganglis laterals sospitosos a l'estudi basal)",
+                optLatEnl: "Ganglis prèviament augmentats de mida:",
+                lblLatCurr: "Mida actual:",
+                lblLatBasal: "Basal:",
+                subTd: "Dipòsits tumorals persistents (TD):",
+                optTdNo: "No",
+                optTdYes: "Sí:",
+                lblTdNum: "Nombre:",
+                lblTdSize: "Mida:",
+                subYcCat: "Categoria ycN estimada final:",
+                optCatPos: "Possiblement ycN+",
+                subM1Nodes: "Ganglis no regionals (Categoria cM):",
+                optM1Na: "N/A (Sense adenopaties no regionals sospitoses al basal)",
+                optM1Enl: "Ganglis prèviament augmentats (ilíacs externs/comuns o inguinals):",
+                lblM1Curr: "Mida actual:",
+                lblM1Basal: "Basal:",
+                secOthers: "4. Altres Troballes",
+                secHelp: "Ajuda al Radiòleg",
+                lblHelpPlaceholder: "[Espai reservat per a material d'ajuda seleccionat en el segon temps. Aquí s'integraran els criteris analítics, mapes ADC i algoritmes decisionals per a l'estratègia Watch-and-Wait].",
+                secPreview: "Vista Prèvia de l'Informe en Text Pla",
+                btnCopy: "Copiar al Portapapers",
+                btnReset: "Reiniciar Mòdul",
+                repHeader: "INFORME DE RM DE RECTE (REESTUDI POST-NEOADJUVÀNCIA - ESGAR 2026)\n=============================================================",
+                repLocal: "\n1. ESTAT TUMORAL LOCAL:",
+                repMrf: "\n2. FÀSCIA MESORRECTAL (ycMRF):",
+                repNodes: "\n3. GANGLIS LIMFÀTICS I DIPÒSITS TUMORALES:",
+                repOthers: "\n4. ALTRES TROBALLES:"
+            }
+        };
+
+        // Cambiar idioma de la UI
+        function changeLanguage() {
+            const lang = document.getElementById("lang-selector").value;
+            const t = translations[lang];
+
+            document.getElementById("lbl-title").innerText = t.title;
+            document.getElementById("sec-local").innerText = t.secLocal;
+            document.getElementById("opt-ccr").innerText = t.optCcr;
+            document.getElementById("opt-near-ccr").innerText = t.optNearCcr;
+            document.getElementById("opt-minor").innerText = t.optMinor;
+            document.getElementById("opt-major").innerText = t.optMajor;
+            document.getElementById("esgar-warning").innerHTML = t.warning;
+            document.getElementById("sub-yct").innerText = t.subYct;
+            document.getElementById("opt-yct3ab").innerText = t.optYct3ab;
+            document.getElementById("opt-yct3cd").innerText = t.optYct3cd;
+            document.getElementById("opt-yct4a").innerText = t.optYct4a;
+            document.getElementById("opt-yct4b").innerText = t.optYct4b;
+            document.getElementById("sub-mucinous").innerText = t.subMucinous;
+            document.getElementById("opt-muc-no").innerText = t.optMucNo;
+            document.getElementById("opt-muc-rem").innerText = t.optMucRem;
+            document.getElementById("opt-muc-trans").innerText = t.optMucTrans;
+            document.getElementById("lbl-dist").innerText = t.lblDist;
+            document.getElementById("lbl-size-fib").innerText = t.lblSizeFib;
+            document.getElementById("lbl-size-tum").innerText = t.lblSizeTum;
+            document.getElementById("sub-ycemvi").innerText = t.subYcemvi;
+            document.getElementById("opt-emvi-no").innerText = t.optEmviNo;
+            document.getElementById("opt-emvi-yes").innerText = t.optEmviYes;
+            document.getElementById("sub-sphincter").innerText = t.subSphincter;
+            document.getElementById("opt-sph-no").innerText = t.optSphNo;
+            document.getElementById("opt-sph-inter").innerText = t.optSphInter;
+            document.getElementById("opt-sph-internal").innerText = t.optSphInternal;
+            document.getElementById("opt-sph-external").innerText = t.optSphExternal;
+
+            document.getElementById("sec-mrf").innerText = t.secMrf;
+            document.getElementById("lbl-mrf-def").innerText = t.lblMrfDef;
+            document.getElementById("opt-mrf-no").innerText = t.optMrfNo;
+            document.getElementById("opt-mrf-yes").innerText = t.optMrfYes;
+            document.getElementById("opt-mrf-tum").innerText = t.optMrfTum;
+            document.getElementById("opt-mrf-fib").innerText = t.optMrfFib;
+            document.getElementById("opt-mrf-emvi").innerText = t.optMrfEmvi;
+            document.getElementById("opt-mrf-dep").innerText = t.optMrfDep;
+            document.getElementById("lbl-mrf-clock").innerText = t.lblMrfClock;
+            document.getElementById("lbl-clock-unit").innerText = t.lblClockUnit;
+
+            document.getElementById("sec-nodes").innerText = t.secNodes;
+            document.getElementById("sub-meso-nodes").innerText = t.subMesoNodes;
+            document.getElementById("opt-meso-n0").innerText = t.optMesoN0;
+            document.getElementById("opt-meso-npos").innerText = t.optMesoNpos;
+            document.getElementById("sub-lat-nodes").innerText = t.subLatNodes;
+            document.getElementById("opt-lat-na").innerText = t.optLatNa;
+            document.getElementById("opt-lat-enl").innerText = t.optLatEnl;
+            document.getElementById("lbl-lat-curr").innerText = t.lblLatCurr;
+            document.getElementById("lbl-lat-basal").innerText = t.lblLatBasal;
+            document.getElementById("sub-td").innerText = t.subTd;
+            document.getElementById("opt-td-no").innerText = t.optTdNo;
+            document.getElementById("opt-td-yes").innerText = t.optTdYes;
+            document.getElementById("lbl-td-num").innerText = t.lblTdNum;
+            document.getElementById("lbl-td-size").innerText = t.lblTdSize;
+            document.getElementById("sub-yc-cat").innerText = t.subYcCat;
+            document.getElementById("opt-cat-pos").innerText = t.optCatPos;
+            document.getElementById("sub-m1-nodes").innerText = t.subM1Nodes;
+            document.getElementById("opt-m1-na").innerText = t.optM1Na;
+            document.getElementById("opt-m1-enl").innerText = t.optM1Enl;
+            document.getElementById("lbl-m1-curr").innerText = t.lblM1Curr;
+            document.getElementById("lbl-m1-basal").innerText = t.lblM1Basal;
+
+            document.getElementById("sec-others").innerText = t.secOthers;
+            document.getElementById("sec-help").innerText = t.secHelp;
+            document.getElementById("lbl-help-placeholder").innerText = t.lblHelpPlaceholder;
+            document.getElementById("sec-preview").innerText = t.secPreview;
+            document.getElementById("btn-copy").innerText = t.btnCopy;
+            document.getElementById("btn-reset").innerText = t.btnReset;
+
+            // Actualizar botones de tema según el idioma
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            document.getElementById("theme-btn").innerText = currentTheme === "dark" ? t.themeBtnLight : t.themeBtnDark;
+
+            generateReport();
+        }
+
+        // Alternar Modo Claro / Oscuro
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const lang = document.getElementById("lang-selector").value;
+            let newTheme = "light";
+            
+            if (currentTheme !== "dark") {
+                newTheme = "dark";
+                document.getElementById("theme-btn").innerText = translations[lang].themeBtnLight;
+            } else {
+                document.getElementById("theme-btn").innerText = translations[lang].themeBtnDark;
+            }
+            
+            document.documentElement.setAttribute("data-theme", newTheme);
+        }
+
+        // Lógica de visualización y avisos ESGAR para cCR y near-cCR
+        function handleResponseChange() {
+            const selected = document.querySelector('input[name="likelihood"]:checked')?.value;
+            const yctBlock = document.getElementById("yct-block");
+            const warningBox = document.getElementById("esgar-warning");
+
+            if (selected === "cCR" || selected === "near-cCR") {
+                yctBlock.classList.add("hidden");
+                warningBox.style.display = "block";
+                // Desmarcar opciones previas de ycT para limpiar coherencia
+                const checkedYct = document.querySelector('input[name="yct"]:checked');
+                if (checkedYct) checkedYct.checked = false;
+            } else {
+                yctBlock.classList.remove("hidden");
+                warningBox.style.display = "none";
+            }
+            generateReport();
+        }
+
+        // REINICIAR FORMULARIO
+        function resetForm() {
+            document.getElementById("esgar-form").reset();
+            handleResponseChange();
+            generateReport();
+        }
+
+        // COPIAR AL PORTAPAPELES
+        function copyToClipboard() {
+            const textarea = document.getElementById("report-output");
+            textarea.select();
+            document.execCommand("copy");
+            alert(document.getElementById("lang-selector").value === "en" ? "Report copied!" : (document.getElementById("lang-selector").value === "ca" ? "Informe copiat!" : "¡Informe copiado al portapapeles!"));
+        }
+
+        // GENERACIÓN DEL INFORME EN TIEMPO REAL (TEXTO PLANO MULTILINGÜE)
+        function generateReport() {
+            const lang = document.getElementById("lang-selector").value;
+            const t = translations[lang];
+            
+            let report = t.repHeader + "\n";
+
+            // --- 1. LOCAL ---
+            report += t.repLocal + "\n";
+            const likelihood = document.querySelector('input[name="likelihood"]:checked')?.value;
+            if (likelihood) {
+                if (likelihood === "cCR") report += ` - ${t.optCcr}\n`;
+                if (likelihood === "near-cCR") report += ` - ${t.optNearCcr}\n`;
+                if (likelihood === "minor") report += ` - ${t.optMinor}\n`;
+                if (likelihood === "major") report += ` - ${t.optMajor}\n`;
+            }
+
+            // ycT si aplica
+            if (likelihood !== "cCR" && likelihood !== "near-cCR") {
+                const yct = document.querySelector('input[name="yct"]:checked')?.value;
+                if (yct) report += ` - ycT: ${yct}\n`;
+            }
+
+            const mucinous = document.querySelector('input[name="mucinous"]:checked')?.value;
+            if (mucinous && mucinous !== "no") {
+                if (mucinous === "remnant") report += ` - ${t.optMucRem}\n`;
+                if (mucinous === "transformation") report += ` - ${t.optMucTrans}\n`;
+            }
+
+            const dist = document.getElementById("dist-fibrosis").value;
+            if (dist) report += ` - ${t.lblDist} ${dist} cm\n`;
+
+            const sizeFib = document.getElementById("size-fibrosis").value;
+            if (sizeFib) report += ` - ${t.lblSizeFib} ${sizeFib} cm\n`;
+
+            const sizeTum = document.getElementById("size-tumor").value;
+            if (sizeTum) report += ` - ${t.lblSizeTum} ${sizeTum} cm\n`;
+
+            const ycemvi = document.querySelector('input[name="ycemvi"]:checked')?.value;
+            if (ycemvi) {
+                report += ` - ycEMVI: ${ycemvi === "yes" ? "POSITIVO (+)" : "NEGATIVO (-)"}\n`;
+            }
+
+            // Esfínteres
+            let sphTexts = [];
+            if (document.getElementById("sph-no").checked) sphTexts.push(t.optSphNo);
+            if (document.getElementById("sph-inter").checked) sphTexts.push(t.optSphInter);
+            if (document.getElementById("sph-internal").checked) sphTexts.push(t.optSphInternal);
+            if (document.getElementById("sph-external").checked) sphTexts.push(t.optSphExternal);
+            if (sphTexts.length > 0) report += ` - ${t.subSphincter} ${sphTexts.join(", ")}\n`;
+
+            // Texto libre local
+            const txtLocal = document.getElementById("text-local").value;
+            if (txtLocal) report += ` [Comentarios]: ${txtLocal}\n`;
+
+
+            // --- 2. FASCIA ---
+            report += t.repMrf + "\n";
+            const ycmrf = document.querySelector('input[name="ycmrf"]:checked')?.value;
+            if (ycmrf) {
+                if (ycmrf === "no") {
+                    report += ` - ${t.optMrfNo}\n`;
+                } else {
+                    report += ` - ${t.optMrfYes}\n`;
+                    if (document.getElementById("mrf-tumor").checked) report += `   * ${t.optMrfTum}\n`;
+                    if (document.getElementById("mrf-fibrosis").checked) report += `   * ${t.optMrfFib}\n`;
+                    if (document.getElementById("mrf-emvi").checked) report += `   * ${t.optMrfEmvi}\n`;
+                    if (document.getElementById("mrf-deposit").checked) report += `   * ${t.optMrfDep}\n`;
+                }
+            }
+            const clock = document.getElementById("mrf-clock").value;
+            if (clock) report += ` - ${t.lblMrfClock} ${clock} ${t.lblClockUnit}\n`;
+
+            const txtMrf = document.getElementById("text-mrf").value;
+            if (txtMrf) report += ` [Comentarios]: ${txtMrf}\n`;
+
+
+            // --- 3. GANGLIOS ---
+            report += t.repNodes + "\n";
+            const mesoNodes = document.querySelector('input[name="meso_nodes"]:checked')?.value;
+            if (mesoNodes) {
+                report += ` - ${t.subMesoNodes} ${mesoNodes === "ycN0" ? t.optMesoN0 : t.optMesoNpos}\n`;
+            }
+
+            const latNodes = document.querySelector('input[name="lat_nodes"]:checked')?.value;
+            if (latNodes === "enlarged") {
+                const curr = document.getElementById("lat-current-size").value;
+                const basal = document.getElementById("lat-basal-size").value;
+                report += ` - ${t.subLatNodes} ${t.optLatEnl} (Actual: ${curr||'-'} mm / Basal: ${basal||'-'} mm)\n`;
+            } else if (latNodes === "na") {
+                report += ` - ${t.subLatNodes} ${t.optLatNa}\n`;
+            }
+
+            const td = document.querySelector('input[name="td"]:checked')?.value;
+            if (td === "yes") {
+                const num = document.getElementById("td-number").value;
+                const size = document.getElementById("td-size").value;
+                report += ` - ${t.subTd} Sí (Nº: ${num||'-'}, Mida: ${size||'-'} mm)\n`;
+            } else if (td === "no") {
+                report += ` - ${t.subTd} No\n`;
+            }
+
+            const ycCat = document.querySelector('input[name="yc_cat"]:checked')?.value;
+            if (ycCat) {
+                report += ` - Categoría ycN Final: ${ycCat === "possibly_ycN" ? t.optCatPos : ycCat}\n`;
+            }
+
+            const m1Nodes = document.querySelector('input[name="m1_nodes"]:checked')?.value;
+            if (m1Nodes === "enlarged") {
+                const curr = document.getElementById("m1-current-size").value;
+                const basal = document.getElementById("m1-basal-size").value;
+                report += ` - ${t.subM1Nodes} (Actual: ${curr||'-'} mm / Basal: ${basal||'-'} mm)\n`;
+            } else if (m1Nodes === "na") {
+                report += ` - ${t.subM1Nodes} ${t.optM1Na}\n`;
+            }
+
+            const txtNodes = document.getElementById("text-nodes").value;
+            if (txtNodes) report += ` [Comentarios]: ${txtNodes}\n`;
+
+
+            // --- 4. OTROS ---
+            const txtOthers = document.getElementById("text-others").value;
+            if (txtOthers) {
+                report += t.repOthers + "\n " + txtOthers + "\n";
+            }
+
+            document.getElementById("report-output").value = report;
+        }
+
+        // Inicialización inicial en Español
+        window.onload = function() {
+            changeLanguage();
+        };
+    </script>
+</body>
+</html>
