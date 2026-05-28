@@ -115,6 +115,26 @@
             padding: 20px;
         }
 
+        .help-image-container {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .help-image-container h3 {
+            font-size: 0.95rem;
+            color: var(--title-color);
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .help-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: white; /* Da contraste a esquemas negros en modo oscuro */
+        }
+
         .form-section {
             margin-bottom: 25px;
         }
@@ -159,6 +179,12 @@
             resize: vertical;
         }
 
+        .explanation-box {
+            margin-top: 5px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
         .warning-box {
             background-color: var(--warning-bg);
             border: 1px solid var(--warning-border);
@@ -180,7 +206,7 @@
 
         .output-textarea {
             width: 100%;
-            height: 150px;
+            height: 180px;
             font-family: monospace;
             font-size: 0.95rem;
             white-space: pre-wrap;
@@ -271,7 +297,7 @@
                         <input type="number" id="size-tumor" step="0.1"> cm
                     </div>
 
-                    <h3 id="sub-ycemvi" style="font-size:1rem; margin-bottom:8px;">ycEMVI (Invasión vascular extramural):</h3>
+                    <h3 id="sub-ycchemvi" style="font-size:1rem; margin-bottom:8px;">ycEMVI (Invasión vascular extramural):</h3>
                     <div class="checkbox-group nested">
                         <label class="checkbox-label"><input type="radio" name="ycemvi" value="no"> <span id="opt-emvi-no">No (sin EMVI en basal o desaparición de la misma)</span></label>
                         <label class="checkbox-label"><input type="radio" name="ycemvi" value="yes"> <span id="opt-emvi-yes">Sí (señal tumoral sospechosa persistente en el sitio de EMVI primaria)</span></label>
@@ -292,7 +318,7 @@
                     <h2 id="sec-mrf">2. Afectación de la Fascia Mesorrectal (ycMRF)</h2>
                     <p style="font-size:0.85rem; font-style:italic;" id="lbl-mrf-def">Margen menor o igual a 1 mm</p>
                     <div class="checkbox-group">
-                        <label class="checkbox-label"><input type="radio" name="ycmrf" value="no"> <span id="opt-mrf-no">No afectado (Cleared / uninvolved ycMRF-)</span></label>
+                        <label class="checkbox-label"><input type="radio" name="ycmrf" value="no"> <span id="opt-mrf-no">No afectado (Libre / no afectado ycMRF-)</span></label>
                         <label class="checkbox-label"><input type="radio" name="ycmrf" value="yes"> <span id="opt-mrf-yes">Sí, afectado por:</span></label>
                         <div class="checkbox-group nested">
                             <label class="checkbox-label"><input type="checkbox" id="mrf-tumor"> <span id="opt-mrf-tum">Tumor residual</span></label>
@@ -320,7 +346,7 @@
 
                     <h3 id="sub-lat-nodes" style="font-size:1rem; margin-bottom:8px;">Ganglios laterales (obturadores / ilíacos internos):</h3>
                     <div class="checkbox-group nested">
-                        <label class="checkbox-label"><input type="radio" name="lat_nodes" value="na"> <span id="opt-lat-na">N/A (Sin ganglios laterales sospechosos en el estudio basal)</span></label>
+                        <label class="checkbox-label"><input type="radio" name="lat_nodes" value="na"> <span id="opt-lat-na">No (Sin ganglios laterales sospechosos en el estudio basal)</span></label>
                         <label class="checkbox-label"><input type="radio" name="lat_nodes" value="enlarged"> <span id="opt-lat-enl">Ganglios previamente aumentados de tamaño:</span></label>
                         <div class="input-inline nested">
                             <span id="lbl-lat-curr">Tamaño actual:</span> <input type="number" id="lat-current-size" step="0.1"> mm | 
@@ -340,14 +366,18 @@
 
                     <h3 id="sub-yc-cat" style="font-size:1rem; margin-bottom:8px;">Categoría ycN estimada final:</h3>
                     <div class="checkbox-group nested">
-                        <label class="checkbox-label"><input type="radio" name="yc_cat" value="ycN0"> <span>ycN0</span></label>
-                        <label class="checkbox-label"><input type="radio" name="yc_cat" value="possibly_ycN"> <span id="opt-cat-pos">Posiblemente ycN+</span></label>
-                        <label class="checkbox-label"><input type="radio" name="yc_cat" value="ycN"> <span>ycN+</span></label>
+                        <label class="checkbox-label"><input type="radio" name="yc_cat" value="ycN0" onclick="handleYcnCatChange()"> <span>ycN0</span></label>
+                        <label class="checkbox-label"><input type="radio" name="yc_cat" value="possibly_ycN" onclick="handleYcnCatChange()"> <span id="opt-cat-pos">Posiblemente ycN+</span></label>
+                        <label class="checkbox-label"><input type="radio" name="yc_cat" value="ycN" onclick="handleYcnCatChange()"> <span>ycN+</span></label>
+                    </div>
+
+                    <div id="ycn-explanation-block" class="explanation-box nested">
+                        <input type="text" id="ycn-explanation-input" style="width: 100%;" placeholder="Justificación / explicación de la sospecha ganglionar..." oninput="generateReport()">
                     </div>
 
                     <h3 id="sub-m1-nodes" style="font-size:1rem; margin-bottom:8px;">Ganglios no regionales (Categoría cM):</h3>
                     <div class="checkbox-group nested">
-                        <label class="checkbox-label"><input type="radio" name="m1_nodes" value="na"> <span id="opt-m1-na">N/A (Sin adenopatías no regionales sospechosas en el basal)</span></label>
+                        <label class="checkbox-label"><input type="radio" name="m1_nodes" value="na"> <span id="opt-m1-na">No (Sin adenopatías no regionales sospechosas en el basal)</span></label>
                         <label class="checkbox-label"><input type="radio" name="m1_nodes" value="enlarged"> <span id="opt-m1-enl">Ganglios previamente aumentados (ilíacos externos/comunes o inguinales):</span></label>
                         <div class="input-inline nested">
                             <span id="lbl-m1-curr">Tamaño actual:</span> <input type="number" id="m1-current-size" step="0.1"> mm | 
@@ -360,16 +390,28 @@
 
                 <div class="form-section">
                     <h2 id="sec-others">4. Otros Hallazgos</h2>
-                    <textarea id="text-others" class="text-free" rows="3" placeholder="Texto libre para otros hallazgos clínicos relevantes..."></textarea>
+                    <textarea id="text-others" class="text-free" rows="2" placeholder="Texto libre para otros hallazgos clínicos relevantes..."></textarea>
+                </div>
+
+                <div class="form-section">
+                    <h2 id="sec-conclusion">5. Conclusión</h2>
+                    <textarea id="text-conclusion" class="text-free" rows="3" placeholder="Texto libre para la conclusión clínica..."></textarea>
                 </div>
             </form>
         </div>
 
         <div class="column-right">
             <h2 id="sec-help" style="margin-top:0;">Ayuda al Radiólogo</h2>
-            <p style="font-size:0.95rem; line-height:1.4;" id="lbl-help-placeholder">
-                [Espacio reservado para material de ayuda seleccionado en el segundo tiempo. Aquí se integrarán los criterios analíticos, mapas ADC y algoritmos decisionales para la estrategia Watch-and-Wait].
-            </p>
+            
+            <div class="help-image-container">
+                <h3 id="lbl-help-fig2">Fig. 2: Algoritmo adaptativo de respuesta luminal (Watch-and-Wait)</h3>
+                <img class="help-img" src="https://media.springernature.com/full/springer-static/image/art%3A10.1007%2Fs00330-025-12275-9/MediaObjects/330_2025_12275_Fig2_HTML.png" alt="ESGAR Restaging Flowchart">
+            </div>
+
+            <div class="help-image-container">
+                <h3 id="lbl-help-fig3">Fig. 3: Evaluación de la respuesta ganglionar (Mesorrectal / Lateral)</h3>
+                <img class="help-img" src="https://media.springernature.com/full/springer-static/image/art%3A10.1007%2Fs00330-025-12275-9/MediaObjects/330_2025_12275_Fig3_HTML.png" alt="ESGAR Nodal Assessment Flowchart">
+            </div>
         </div>
 
         <div class="output-container">
@@ -417,7 +459,7 @@
                 optSphExternal: "Esfínter externo (=ycT4b)",
                 secMrf: "2. Afectación de la Fascia Mesorrectal (ycMRF)",
                 lblMrfDef: "Margen menor o igual a 1 mm",
-                optMrfNo: "No afectado (Cleared / uninvolved ycMRF-)",
+                optMrfNo: "No afectado (Libre / no afectado ycMRF-)",
                 optMrfYes: "Sí, afectado por:",
                 optMrfTum: "Tumor residual",
                 optMrfFib: "Fibrosis con potencial tumor residual",
@@ -430,7 +472,7 @@
                 optMesoN0: "ycN0 (Sin ganglios remanentes o solo ganglios < 5 mm de eje corto)",
                 optMesoNpos: "Posible ycN+ (Cualquier ganglio con eje corto ≥ 5 mm o señal mucinosa)",
                 subLatNodes: "Ganglios laterales (obturadores / ilíacos internos):",
-                optLatNa: "N/A (Sin ganglios laterales sospechosos en el estudio basal)",
+                optLatNa: "No (Sin ganglios laterales sospechosos en el estudio basal)",
                 optLatEnl: "Ganglios previamente aumentados de tamaño:",
                 lblLatCurr: "Tamaño actual:",
                 lblLatBasal: "Basal:",
@@ -442,21 +484,24 @@
                 subYcCat: "Categoría ycN estimada final:",
                 optCatPos: "Posiblemente ycN+",
                 subM1Nodes: "Ganglios no regionales (Categoría cM):",
-                optM1Na: "N/A (Sin adenopatías no regionales sospechosas en el basal)",
+                optM1Na: "No (Sin adenopatías no regionales sospechosas en el basal)",
                 optM1Enl: "Ganglios previamente aumentados (ilíacos externos/comunes o inguinales):",
                 lblM1Curr: "Tamaño actual:",
                 lblM1Basal: "Basal:",
                 secOthers: "4. Otros Hallazgos",
+                secConclusion: "5. Conclusión",
                 secHelp: "Ayuda al Radiólogo",
-                lblHelpPlaceholder: "[Espacio reservado para material de ayuda seleccionado en el segundo tiempo. Aquí se integrarán los criterios analíticos, mapas ADC y algoritmos decisionales para la estrategia Watch-and-Wait].",
+                lblHelpFig2: "Fig. 2: Algoritmo adaptativo de respuesta luminal (Watch-and-Wait)",
+                lblHelpFig3: "Fig. 3: Evaluación de la respuesta ganglionar (Mesorrectal / Lateral)",
                 secPreview: "Vista Previa del Informe de Texto Plano",
                 btnCopy: "Copiar al Portapapeles",
                 btnReset: "Reiniciar Módulo",
-                repHeader: "INFORME DE RM DE RECTO (REESTUDIO POST-NEOADYUVANCIA - ESGAR 2026)\n=============================================================",
+                repHeader: "RM DE RECTO (FECHA)\n========================",
                 repLocal: "\n1. ESTADO TUMORAL LOCAL:",
                 repMrf: "\n2. FASCIA MESORRECTAL (ycMRF):",
                 repNodes: "\n3. GANGLIOS LINFÁTICOS Y DEPÓSITOS TUMORALES:",
-                repOthers: "\n4. OTROS HALLAZGOS:"
+                repOthers: "\n4. OTROS HALLAZGOS:",
+                repConclusion: "\n5. CONCLUSIÓN:"
             },
             en: {
                 title: "Rectal MRI: Post-Neoadjuvant Restaging (ESGAR 2026)",
@@ -503,7 +548,7 @@
                 optMesoN0: "ycN0 (No remaining nodes or only nodes < 5 mm short axis)",
                 optMesoNpos: "Possibly ycN+ (Any remaining nodes with short axis ≥ 5 mm or mucinous signal)",
                 subLatNodes: "Lateral lymph nodes (obturator / internal iliac):",
-                optLatNa: "N/A (No suspicious lateral nodes at baseline)",
+                optLatNa: "No (No suspicious lateral nodes at baseline)",
                 optLatEnl: "Previously enlarged nodes:",
                 lblLatCurr: "Current size:",
                 lblLatBasal: "Baseline:",
@@ -515,21 +560,24 @@
                 subYcCat: "Estimated final ycN-category:",
                 optCatPos: "Possibly ycN+",
                 subM1Nodes: "Non-regional lymph nodes (cM category):",
-                optM1Na: "N/A (No suspicious non-regional nodes at baseline)",
+                optM1Na: "No (No suspicious non-regional nodes at baseline)",
                 optM1Enl: "Previously enlarged nodes (external/common iliac or inguinal):",
                 lblM1Curr: "Current size:",
                 lblM1Basal: "Baseline:",
                 secOthers: "4. Other Findings",
+                secConclusion: "5. Conclusion",
                 secHelp: "Radiologist Support",
-                lblHelpPlaceholder: "[Space reserved for support materials selected in the second phase. Decisional algorithms for Watch-and-Wait, ADC maps, and analytical metrics will be placed here].",
+                lblHelpFig2: "Fig. 2: Adaptive luminal response algorithm (Watch-and-Wait)",
+                lblHelpFig3: "Fig. 3: Nodal response assessment (Mesorectal / Lateral)",
                 secPreview: "Plain Text Report Preview",
                 btnCopy: "Copy to Clipboard",
                 btnReset: "Reset Form",
-                repHeader: "RECTAL MRI REPORT (POST-NEOADJUVANT RESTAGING - ESGAR 2026)\n=============================================================",
+                repHeader: "RECTAL MRI (DATE)\n=================",
                 repLocal: "\n1. LOCAL TUMOR STATUS:",
                 repMrf: "\n2. MESORECTAL FASCIA (ycMRF):",
                 repNodes: "\n3. LYMPH NODES AND TUMOR DEPOSITS:",
-                repOthers: "\n4. OTHER FINDINGS:"
+                repOthers: "\n4. OTHER FINDINGS:",
+                repConclusion: "\n5. CONCLUSION:"
             },
             ca: {
                 title: "RM de Recte: Reestudi post-neoadjuvància (ESGAR 2026)",
@@ -540,7 +588,7 @@
                 optNearCcr: "Resposta clínica gairebé completa (near-cCR) [Fibrosi predominantment homogènia, amb/sense petits focs de restricció]",
                 optMinor: "Residu tumoral menor [Fibrosi heterogènia amb senyal tumoral intermèdia ± restricció focal]",
                 optMajor: "Residu tumoral major [Massa sòlida persistent amb restricció a la difusió]",
-                warning: "⚠️ ESGAR 2026: En cas de cCR o near-cCR, no es recomana desglossar la categoria ycT per manca d'implicació clínica i risc de confusió. El bloc ycT s'ha ocultat automàticament.",
+                warning: "⚠️ ESGAR 2026: En cas de cCR o near-cCR, no se recomana desglossar la categoria ycT per manca d'implicació clínica i risc de confusió. El bloc ycT s'ha ocultat automàticament.",
                 subYct: "Categoria ycT estimada:",
                 optYct3ab: "ycT3ab (≤5 mm de creixement extramural)",
                 optYct3cd: "ycT3cd (>5 mm de creixement extramural)",
@@ -549,7 +597,7 @@
                 subMucinous: "Component mucinós:",
                 optMucNo: "No",
                 optMucRem: "Sí, remanent mucinós de tumor primari mucinós",
-                optMucTrans: "Sí, transformació mucinosa de tumor primario sòlid",
+                optMucTrans: "Sí, transformació mucinosa de tumor primari sòlid",
                 lblDist: "Distància des de la unió anorrectal al vora inferior de la resta lesional (incloent fibrosi):",
                 lblSizeFib: "Mida de la lesió remanent (incloent fibrosi):",
                 lblSizeTum: "Mida estimada del tumor residual dins de la fibrosi:",
@@ -563,10 +611,10 @@
                 optSphExternal: "Esfínter extern (=ycT4b)",
                 secMrf: "2. Afectació de la Fàscia Mesorrectal (ycMRF)",
                 lblMrfDef: "Marge menor o igual a 1 mm",
-                optMrfNo: "No afectat (Cleared / uninvolved ycMRF-)",
+                optMrfNo: "No afectat (Lliure / no afectat ycMRF-)",
                 optMrfYes: "Sí, afectat per:",
                 optMrfTum: "Tumor residual",
-                optMrfFib: "Fibrosi amb potencial tumor residual",
+                optMrfFib: "Fibrosi com a potencial tumor residual",
                 optMrfEmvi: "EMVI persistent",
                 optMrfDep: "Dipòsit tumoral o gangli limfàtic irregular persistent",
                 lblMrfClock: "Localització horària de l'afectació persistent:",
@@ -576,7 +624,7 @@
                 optMesoN0: "ycN0 (Sense ganglis remanents o només ganglis < 5 mm d'eix curt)",
                 optMesoNpos: "Possible ycN+ (Qualsevol gangli amb eix curt ≥ 5 mm o senyal mucinosa)",
                 subLatNodes: "Ganglis laterals (obturadors / ilíacs interns):",
-                optLatNa: "N/A (Sense ganglis laterals sospitosos a l'estudi basal)",
+                optLatNa: "No (Sense ganglis laterals sospitosos a l'estudi basal)",
                 optLatEnl: "Ganglis prèviament augmentats de mida:",
                 lblLatCurr: "Mida actual:",
                 lblLatBasal: "Basal:",
@@ -588,21 +636,24 @@
                 subYcCat: "Categoria ycN estimada final:",
                 optCatPos: "Possiblement ycN+",
                 subM1Nodes: "Ganglis no regionals (Categoria cM):",
-                optM1Na: "N/A (Sense adenopaties no regionals sospitoses al basal)",
-                optM1Enl: "Ganglis prèviament augmentats (ilíacs externs/comuns o inguinals):",
+                optM1Na: "No (Sense adenopaties no regionals sospitoses al basal)",
+                optM1Enl: "Ganglis prèviament augmentats (ilíacs externs/comuns o inguinales):",
                 lblM1Curr: "Mida actual:",
                 lblM1Basal: "Basal:",
                 secOthers: "4. Altres Troballes",
+                secConclusion: "5. Conclusió",
                 secHelp: "Ajuda al Radiòleg",
-                lblHelpPlaceholder: "[Espai reservat per a material d'ajuda seleccionat en el segon temps. Aquí s'integraran els criteris analítics, mapes ADC i algoritmes decisionals per a l'estratègia Watch-and-Wait].",
+                lblHelpFig2: "Fig. 2: Algorisme adaptatiu de resposta luminal (Watch-and-Wait)",
+                lblHelpFig3: "Fig. 3: Avaluació de la resposta ganglionar (Mesorrectal / Lateral)",
                 secPreview: "Vista Prèvia de l'Informe en Text Pla",
                 btnCopy: "Copiar al Portapapers",
                 btnReset: "Reiniciar Mòdul",
-                repHeader: "INFORME DE RM DE RECTE (REESTUDI POST-NEOADJUVÀNCIA - ESGAR 2026)\n=============================================================",
+                repHeader: "RM DE RECTE (DATA)\n====================",
                 repLocal: "\n1. ESTAT TUMORAL LOCAL:",
                 repMrf: "\n2. FÀSCIA MESORRECTAL (ycMRF):",
                 repNodes: "\n3. GANGLIS LIMFÀTICS I DIPÒSITS TUMORALES:",
-                repOthers: "\n4. ALTRES TROBALLES:"
+                repOthers: "\n4. ALTRES TROBALLES:",
+                repConclusion: "\n5. CONCLUSIÓ:"
             }
         };
 
@@ -630,7 +681,7 @@
             document.getElementById("lbl-dist").innerText = t.lblDist;
             document.getElementById("lbl-size-fib").innerText = t.lblSizeFib;
             document.getElementById("lbl-size-tum").innerText = t.lblSizeTum;
-            document.getElementById("sub-ycemvi").innerText = t.subYcemvi;
+            document.getElementById("sub-ycchemvi").innerText = t.subYcemvi;
             document.getElementById("opt-emvi-no").innerText = t.optEmviNo;
             document.getElementById("opt-emvi-yes").innerText = t.optEmviYes;
             document.getElementById("sub-sphincter").innerText = t.subSphincter;
@@ -673,13 +724,14 @@
             document.getElementById("lbl-m1-basal").innerText = t.lblM1Basal;
 
             document.getElementById("sec-others").innerText = t.secOthers;
+            document.getElementById("sec-conclusion").innerText = t.secConclusion;
             document.getElementById("sec-help").innerText = t.secHelp;
-            document.getElementById("lbl-help-placeholder").innerText = t.lblHelpPlaceholder;
+            document.getElementById("lbl-help-fig2").innerText = t.lblHelpFig2;
+            document.getElementById("lbl-help-fig3").innerText = t.lblHelpFig3;
             document.getElementById("sec-preview").innerText = t.secPreview;
             document.getElementById("btn-copy").innerText = t.btnCopy;
             document.getElementById("btn-reset").innerText = t.btnReset;
 
-            // Actualizar botones de tema según el idioma
             const currentTheme = document.documentElement.getAttribute("data-theme");
             document.getElementById("theme-btn").innerText = currentTheme === "dark" ? t.themeBtnLight : t.themeBtnDark;
 
@@ -711,7 +763,6 @@
             if (selected === "cCR" || selected === "near-cCR") {
                 yctBlock.classList.add("hidden");
                 warningBox.style.display = "block";
-                // Desmarcar opciones previas de ycT para limpiar coherencia
                 const checkedYct = document.querySelector('input[name="yct"]:checked');
                 if (checkedYct) checkedYct.checked = false;
             } else {
@@ -721,10 +772,25 @@
             generateReport();
         }
 
+        // Lógica específica para el recuadro dinámico de ycN+
+        function handleYcnCatChange() {
+            const selectedYcn = document.querySelector('input[name="yc_cat"]:checked')?.value;
+            const explanationBlock = document.getElementById("ycn-explanation-block");
+            
+            if (selectedYcn === "possibly_ycN") {
+                explanationBlock.style.display = "block";
+            } else {
+                explanationBlock.style.display = "none";
+                document.getElementById("ycn-explanation-input").value = ""; // Limpiar campo si se cambia
+            }
+            generateReport();
+        }
+
         // REINICIAR FORMULARIO
         function resetForm() {
             document.getElementById("esgar-form").reset();
             handleResponseChange();
+            handleYcnCatChange();
             generateReport();
         }
 
@@ -736,7 +802,7 @@
             alert(document.getElementById("lang-selector").value === "en" ? "Report copied!" : (document.getElementById("lang-selector").value === "ca" ? "Informe copiat!" : "¡Informe copiado al portapapeles!"));
         }
 
-        // GENERACIÓN DEL INFORME EN TIEMPO REAL (TEXTO PLANO MULTILINGÜE)
+        // GENERACIÓN DEL INFORME EN TIEMPO REAL
         function generateReport() {
             const lang = document.getElementById("lang-selector").value;
             const t = translations[lang];
@@ -753,7 +819,6 @@
                 if (likelihood === "major") report += ` - ${t.optMajor}\n`;
             }
 
-            // ycT si aplica
             if (likelihood !== "cCR" && likelihood !== "near-cCR") {
                 const yct = document.querySelector('input[name="yct"]:checked')?.value;
                 if (yct) report += ` - ycT: ${yct}\n`;
@@ -769,7 +834,7 @@
             if (dist) report += ` - ${t.lblDist} ${dist} cm\n`;
 
             const sizeFib = document.getElementById("size-fibrosis").value;
-            if (sizeFib) report += ` - ${t.lblSizeFib} ${sizeFib} cm\n`;
+            if (sizeFib) report += ` - ${t.lblSizeFib} ${sizeFib} cm\n`
 
             const sizeTum = document.getElementById("size-tumor").value;
             if (sizeTum) report += ` - ${t.lblSizeTum} ${sizeTum} cm\n`;
@@ -779,7 +844,6 @@
                 report += ` - ycEMVI: ${ycemvi === "yes" ? "POSITIVO (+)" : "NEGATIVO (-)"}\n`;
             }
 
-            // Esfínteres
             let sphTexts = [];
             if (document.getElementById("sph-no").checked) sphTexts.push(t.optSphNo);
             if (document.getElementById("sph-inter").checked) sphTexts.push(t.optSphInter);
@@ -787,7 +851,6 @@
             if (document.getElementById("sph-external").checked) sphTexts.push(t.optSphExternal);
             if (sphTexts.length > 0) report += ` - ${t.subSphincter} ${sphTexts.join(", ")}\n`;
 
-            // Texto libre local
             const txtLocal = document.getElementById("text-local").value;
             if (txtLocal) report += ` [Comentarios]: ${txtLocal}\n`;
 
@@ -826,7 +889,7 @@
                 const basal = document.getElementById("lat-basal-size").value;
                 report += ` - ${t.subLatNodes} ${t.optLatEnl} (Actual: ${curr||'-'} mm / Basal: ${basal||'-'} mm)\n`;
             } else if (latNodes === "na") {
-                report += ` - ${t.subLatNodes} ${t.optLatNa}\n`;
+                report += ` - ${t.subLatNodes} No\n`;
             }
 
             const td = document.querySelector('input[name="td"]:checked')?.value;
@@ -840,7 +903,12 @@
 
             const ycCat = document.querySelector('input[name="yc_cat"]:checked')?.value;
             if (ycCat) {
-                report += ` - Categoría ycN Final: ${ycCat === "possibly_ycN" ? t.optCatPos : ycCat}\n`;
+                const catName = ycCat === "possibly_ycN" ? t.optCatPos : ycCat;
+                report += ` - Categoría ycN Final: ${catName}\n`;
+                if (ycCat === "possibly_ycN") {
+                    const explanationText = document.getElementById("ycn-explanation-input").value;
+                    if (explanationText) report += `   [Justificación ycN+]: ${explanationText}\n`;
+                }
             }
 
             const m1Nodes = document.querySelector('input[name="m1_nodes"]:checked')?.value;
@@ -849,7 +917,7 @@
                 const basal = document.getElementById("m1-basal-size").value;
                 report += ` - ${t.subM1Nodes} (Actual: ${curr||'-'} mm / Basal: ${basal||'-'} mm)\n`;
             } else if (m1Nodes === "na") {
-                report += ` - ${t.subM1Nodes} ${t.optM1Na}\n`;
+                report += ` - ${t.subM1Nodes} No\n`;
             }
 
             const txtNodes = document.getElementById("text-nodes").value;
@@ -862,10 +930,15 @@
                 report += t.repOthers + "\n " + txtOthers + "\n";
             }
 
+            // --- 5. CONCLUSIÓN ---
+            const txtConclusion = document.getElementById("text-conclusion").value;
+            if (txtConclusion) {
+                report += t.repConclusion + "\n " + txtConclusion + "\n";
+            }
+
             document.getElementById("report-output").value = report;
         }
 
-        // Inicialización inicial en Español
         window.onload = function() {
             changeLanguage();
         };
