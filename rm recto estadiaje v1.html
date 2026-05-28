@@ -337,7 +337,7 @@
                     <div class="grid-group">
                         <div class="sub-group-title" data-i18n="sub-peritoneal">Relación con la reflexión peritoneal anterior</div>
                         <label class="option-item"><input type="radio" name="peritoneal" value="Below"> <span data-i18n="opt-below">Por debajo</span></label>
-                        <label class="option-item"><input type="radio" name="peritoneal" value="Straddles"> <span data-i18n="opt-straddles">Cruza / En selló</span></label>
+                        <label class="option-item"><input type="radio" name="peritoneal" value="Straddles"> <span data-i18n="opt-straddles">La cruza</span></label>
                         <label class="option-item"><input type="radio" name="peritoneal" value="Above"> <span data-i18n="opt-above">Por encima</span></label>
 
                         <div class="sub-group-title" data-i18n="sub-sto">Relación del borde inferior con el Take-Off Sigmoideo</div>
@@ -503,14 +503,12 @@
 
         <div class="right-column">
             <h2 data-i18n="sec-help-title">Soporte Departamental y Guías</h2>
-            
             <div class="help-image-container">
-                <h3 data-i18n="fig4-title">Anatomía local y Take-Off (Fig. 4)</h3>
+                <h3 data-i18n="fig4-title">Localización y Take-Off Sigmoideo (Fig. 4)</h3>
                 <img class="help-img" src="https://media.springernature.com/full/springer-static/image/art%3A10.1007%2Fs00330-025-12274-w/MediaObjects/330_2025_12274_Fig4_HTML.png?as=webp" alt="ESGAR Fig 4">
             </div>
-
             <div class="help-image-container">
-                <h3 data-i18n="fig3-title">Algoritmo de riesgo cN (Fig. 3)</h3>
+                <h3 data-i18n="fig3-title">Algoritmo de Riesgo Nodal Paso a Paso (Fig. 3)</h3>
                 <img class="help-img" src="https://media.springernature.com/full/springer-static/image/art%3A10.1007%2Fs00330-025-12274-w/MediaObjects/330_2025_12274_Fig3_HTML.png?as=webp" alt="ESGAR Fig 3">
             </div>
         </div>
@@ -531,7 +529,7 @@
                 "lbl-dist-av": "Distancia desde el margen anal al borde inferior (cm - opcional):",
                 "lbl-length": "Longitud del tumor (cm):",
                 "sub-peritoneal": "Relación con la reflexión peritoneal anterior",
-                "opt-below": "Por debajo", "opt-straddles": "Cruza / En selló", "opt-above": "Por encima",
+                "opt-below": "Por debajo", "opt-straddles": "La cruza", "opt-above": "Por encima",
                 "sub-sto": "Relación del borde inferior con el Take-Off Sigmoideo",
                 "opt-sto-below": "En/por debajo (recto)", "opt-sto-above": "Por encima (sigma)",
                 "sub-ct": "Categoría T clínica (cT)",
@@ -544,8 +542,8 @@
                 "opt-intersphincteric": "Espacio interesfinteriano", "opt-internal-sph": "Esfínter interno", "opt-external-sph": "Esfínter externo (=cT4b)",
                 "lbl-sphincter-details": "Descripción detallada de la afectación (lado, localización, extensión craneocaudal):",
                 "sec-mrf": "Afectación de la Fascia Mesorrectal (FMR)",
-                "sub-mrf-status": "Afectación (margen &le;1 mm)",
-                "opt-mrf-free": "No (Margen >1 mm)", "opt-mrf-invaded": "Sí (&le;1 mm)",
+                "sub-mrf-status": "Afectación (margen <= 1 mm)",
+                "opt-mrf-free": "No (Margen > 1 mm)", "opt-mrf-invaded": "Sí (<= 1 mm)",
                 "sub-mrf-mechanism": "Mecanismo de afectación",
                 "cause-tumour": "Tumor primario", "cause-node": "Ganglio irregular / Depósito tumoral",
                 "lbl-mrf-clock": "Localización (posición horaria):",
@@ -568,19 +566,19 @@
                 "fig4-title": "Localización y Take-Off Sigmoideo (Fig. 4)",
                 "fig3-title": "Algoritmo de Riesgo Nodal Paso a Paso (Fig. 3)",
                 
-                // Salidas del informe
+                // Mapeos de palabras para salida final limpia
                 "rep-title": "INFORME DE RM DE RECTO (ESTADIAJE PRIMARIO - ESGAR 2026)",
                 "rep-section-morph": "MORFOLOGÍA",
                 "rep-section-loc": "LOCALIZACIÓN Y MEDIDAS",
-                "rep-section-t": "ESTADIAJE T CLÍNICO (cT) Y FACTORES DE RIESGO",
+                "rep-section-t": "ESTADIAJE T CLÍNIC (cT) Y FACTORS DE RIESGO",
                 "rep-section-mrf": "FASCIA MESORRECTAL (FMR)",
                 "rep-section-n": "ESTADIAJE GANGLIONAR (cN) Y DEPÓSITOS",
                 "rep-section-other": "OTROS HALLAZGOS",
                 "rep-section-conclusion": "CONCLUSIÓN",
                 "rep-not-eval": "No evaluado", "rep-none": "Ninguno", "rep-no": "No", "rep-yes": "Sí",
                 "rep-solid": "Sólido", "rep-mucinous": "Mucinoso", "rep-mixed": "Mixto",
-                "rep-polyp": "Pólipo", "rep-annular": "Completamente anular", "rep-part-annular": "Parcialmente anular",
-                "rep-below": "Por debajo", "rep-straddles": "Cruza / En selló", "rep-above": "Por encima",
+                "rep-polyp": "Pólipo", "rep-fully-annular": "Completamente anular", "rep-partly-annular": "Parcialmente anular",
+                "rep-below": "Por debajo", "rep-straddles": "La cruza", "rep-above": "Por encima",
                 "rep-sto-below": "En/por debajo (recto)", "rep-sto-above": "Por encima (sigma)"
             },
             ca: {
@@ -596,7 +594,7 @@
                 "lbl-dist-av": "Distància des del marge anal al marge inferior (cm - opcional):",
                 "lbl-length": "Longitud del tumor (cm):",
                 "sub-peritoneal": "Relació amb la reflexió peritoneal anterior",
-                "opt-below": "Per sota", "opt-straddles": "Creua / En selló", "opt-above": "Per sobre",
+                "opt-below": "Per sota", "opt-straddles": "La creua", "opt-above": "Per sobre",
                 "sub-sto": "Relació del marge inferior amb el Take-Off Sigmoïdal",
                 "opt-sto-below": "A/per sota (recte)", "opt-sto-above": "Per sobre (sigma)",
                 "sub-ct": "Categoria T clínica (cT)",
@@ -609,15 +607,15 @@
                 "opt-intersphincteric": "Espai interesfinterià", "opt-internal-sph": "Esfínter intern", "opt-external-sph": "Esfínter extern (=cT4b)",
                 "lbl-sphincter-details": "Descripció detallada de l'afectació (costat, localització, extensió craniocaudal):",
                 "sec-mrf": "Afectació de la Fàscia Mesorrectal (FMR)",
-                "sub-mrf-status": "Afectació (marge &le;1 mm)",
-                "opt-mrf-free": "No (Marge >1 mm)", "opt-mrf-invaded": "Sí (&le;1 mm)",
+                "sub-mrf-status": "Afectació (marge <= 1 mm)",
+                "opt-mrf-free": "No (Marge > 1 mm)", "opt-mrf-invaded": "Sí (<= 1 mm)",
                 "sub-mrf-mechanism": "Mecanisme d'afectació",
                 "cause-tumour": "Tumor primari", "cause-node": "Gangli irregular / Dipòsit tumoral",
                 "lbl-mrf-clock": "Localització (posició horària):",
                 "sec-nodes": "Ganglis Limfàtics i Dipòsits Tumorals",
                 "sub-meso-nodes": "Ganglis Mesorrectals Sospitosos",
                 "lbl-details-num-size": "Detalls (Nombre, mida màx):",
-                "sub-lat-nodes": "Ganglis Laterals Regionals Sospitosos (Obturadors / Ilíacs Interns)",
+                "sub-lat-nodes": "Ganglis Regionals Sospitosos (Obturadors / Ilíacs Interns)",
                 "node-obturator": "Obturadors", "node-int-iliac": "Ilíacs interns",
                 "lbl-details-num-size-side": "Detalls (Nombre, mida, costat):",
                 "sub-td": "Dipòsits Tumorals (TDs)",
@@ -627,13 +625,13 @@
                 "sec-other-findings": "Altres Troballes",
                 "sec-conclusion": "Conclusió",
                 "title-schematic-lbl": "1. Informe Estructurat Esquemàtic",
-                "title-narrative-lbl": "2. Informe Clínico Narratiu",
+                "title-narrative-lbl": "2. Informe Clínic Narratiu",
                 "btn-copy": "Copiar al Portapapeles", "btn-reset": "Reiniciar Mòdul",
                 "sec-help-title": "Suport Departamental i Guies",
                 "fig4-title": "Localització i Take-Off Sigmoïdal (Fig. 4)",
                 "fig3-title": "Algorisme de Risc Nodal Pas a Pas (Fig. 3)",
                 
-                // Salidas del informe
+                // Mapeos de palabras para salida final limpia
                 "rep-title": "INFORME DE RM DE RECTE (ESTADIATGE PRIMARI - ESGAR 2026)",
                 "rep-section-morph": "MORFOLOGIA",
                 "rep-section-loc": "LOCALITZACIÓ I MESURES",
@@ -644,8 +642,8 @@
                 "rep-section-conclusion": "CONCLUSIÓ",
                 "rep-not-eval": "No avaluat", "rep-none": "Cap", "rep-no": "No", "rep-yes": "Sí",
                 "rep-solid": "Sòlid", "rep-mucinous": "Mucinós", "rep-mixed": "Mixte",
-                "rep-polyp": "Pòlip", "rep-annular": "Completament anular", "rep-part-annular": "Parcialment anular",
-                "rep-below": "Per sota", "rep-straddles": "Creua / En selló", "rep-above": "Per sobre",
+                "rep-polyp": "Pòlip", "rep-fully-annular": "Completament anular", "rep-partly-annular": "Parcialment anular",
+                "rep-below": "Per sota", "rep-straddles": "La creua", "rep-above": "Per sobre",
                 "rep-sto-below": "A/per sota (recte)", "rep-sto-above": "Per sobre (sigma)"
             },
             en: {
@@ -674,8 +672,8 @@
                 "opt-intersphincteric": "Intersphincteric space", "opt-internal-sph": "Internal sphincter", "opt-external-sph": "External sphincter (=cT4b)",
                 "lbl-sphincter-details": "Detailed description of involvement (side, location, craniocaudal extension):",
                 "sec-mrf": "Mesorectal Fascia (MRF) Involvement",
-                "sub-mrf-status": "Involvement (margin &le;1 mm)",
-                "opt-mrf-free": "No (Margin >1 mm)", "opt-mrf-invaded": "Yes (&le;1 mm)",
+                "sub-mrf-status": "Involvement (margin <= 1 mm)",
+                "opt-mrf-free": "No (Margin > 1 mm)", "opt-mrf-invaded": "Yes (<= 1 mm)",
                 "sub-mrf-mechanism": "Mechanism of involvement",
                 "cause-tumour": "Primary tumour", "cause-node": "Irregular lymph node / Tumour deposit",
                 "lbl-mrf-clock": "Location (o'clock):",
@@ -698,7 +696,7 @@
                 "fig4-title": "Anatomy Localisation & Sigmoid Take-Off (Fig. 4)",
                 "fig3-title": "Stepwise Risk-Adaptive Nodal Flowchart (Fig. 3)",
                 
-                // Salidas del informe
+                // Mapeos de palabras para salida final limpia
                 "rep-title": "RECTAL MRI REPORT (PRIMARY STAGING - ESGAR 2026)",
                 "rep-section-morph": "MORPHOLOGY",
                 "rep-section-loc": "LOCATION & MEASUREMENTS",
@@ -709,7 +707,7 @@
                 "rep-section-conclusion": "CONCLUSION",
                 "rep-not-eval": "Not evaluated", "rep-none": "None", "rep-no": "No", "rep-yes": "Yes",
                 "rep-solid": "Solid", "rep-mucinous": "Mucinous", "rep-mixed": "Mixed",
-                "rep-polyp": "Polyp", "rep-annular": "Fully annular", "rep-part-annular": "Partly annular",
+                "rep-polyp": "Polyp", "rep-fully-annular": "Fully annular", "rep-partly-annular": "Partly annular",
                 "rep-below": "Below", "rep-straddles": "Straddles", "rep-above": "Above",
                 "rep-sto-below": "At/below (rectum)", "rep-sto-above": "Above (sigmoid)"
             }
@@ -765,11 +763,16 @@
             const form = document.getElementById('staging-form');
             const formData = new FormData(form);
 
+            // MAPEOS Y ENLACES CORREGIDOS PARA INTERFAZ E INFORMES
             const rawComp = formData.get('composition');
             const comp = rawComp ? t['rep-' + rawComp.toLowerCase()] : t['rep-not-eval'];
             
             const rawShape = formData.get('shape');
-            const shape = rawShape ? t['rep-' + rawShape.toLowerCase().replace(' ', '-')] : t['rep-not-eval'];
+            let keyShape = 'not-eval';
+            if (rawShape === 'Polyp') keyShape = 'polyp';
+            if (rawShape === 'Fully annular') keyShape = 'fully-annular';
+            if (rawShape === 'Partly annular') keyShape = 'partly-annular';
+            const shape = t['rep-' + keyShape];
 
             const distArj = document.getElementById('dist-arj').value;
             const distAv = document.getElementById('dist-av').value;
@@ -795,18 +798,18 @@
             const otherFindingsText = document.getElementById('custom-other-findings').value;
             const conclusionText = document.getElementById('custom-conclusion').value;
 
-            // Paneles Condicionales Reactivos
+            // Mostrar u ocultar paneles reactivos
             document.getElementById('polyp-warning').style.display = (rawShape === 'Polyp') ? 'block' : 'none';
             document.getElementById('partly-annular-hours').style.display = (rawShape === 'Partly annular') ? 'flex' : 'none';
             document.getElementById('ct4b-panel').style.display = (ct === 'cT4b') ? 'block' : 'none';
-            document.getElementById('sphincter-details-panel').style.display = (sphincter !== 'No' && rawPeritoneal !== null && sphincter !== t['rep-not-eval']) ? 'block' : 'none';
+            document.getElementById('sphincter-details-panel').style.display = (sphincter !== 'No' && sphincter !== t['rep-not-eval']) ? 'block' : 'none';
             document.getElementById('mrf-details').style.display = (formData.get('mrf') === 'Yes') ? 'block' : 'none';
             document.getElementById('meso-nodes-details').style.display = (mesoNodes === 'Yes') ? 'flex' : 'none';
             document.getElementById('lat-nodes-details').style.display = (latNodes === 'Yes') ? 'block' : 'none';
             document.getElementById('td-details').style.display = (td === 'Yes') ? 'flex' : 'none';
             document.getElementById('cm-nodes-details').style.display = (cmNodes === 'Yes') ? 'block' : 'none';
 
-            // --- 1. INFORME ESQUEMÁTICO ---
+            // --- 1. GENERACIÓN DE INFORME ESQUEMÁTICO ---
             let schematic = `*** ${t['rep-title']} ***\n\n`;
             
             schematic += `[${t['rep-section-morph']}]\n`;
@@ -853,7 +856,7 @@
             schematic += `\n`;
 
             schematic += `[${t['rep-section-mrf']}]\n`;
-            schematic += `  - Afectada (&le;1 mm): ${mrf}\n`;
+            schematic += `  - Afectada (<= 1 mm): ${mrf}\n`;
             if (formData.get('mrf') === 'Yes') {
                 const mrfCauses = Array.from(document.querySelectorAll('input[name="mrf_cause"]:checked')).map(el => {
                     if(lang === 'en') return el.value;
@@ -900,7 +903,7 @@
             document.getElementById('report-schematic').value = schematic;
 
 
-            // --- 2. INFORME NARRATIVO ---
+            // --- 2. GENERACIÓN DE INFORME NARRATIVO REPARADA ---
             let narrative = "";
             if (lang === 'es') {
                 narrative = `ESTUDIO DE RESONANCIA MAGNÉTICA DE RECTO (ESTADIAJE PRIMARIO - ESGAR 2026)\n\n`;
@@ -912,14 +915,16 @@
                 narrative += `. El tumor presenta una longitud máxima de ${length || '___'} cm. Su borde inferior se localiza a una distancia de ${distArj || '___'} cm de la unión anorrectal`;
                 if (distAv) narrative += ` y a ${distAv} cm del margen anal`;
                 
-                let textSto = (rawSto === 'At/below (rectum)') ? "en o por debajo del nivel del Take-Off Sigmoideo, confirmando la localización en recto" : "por encima del Take-Off Sigmoideo, orientando a una neoplasia de sigma";
+                let textSto = (rawSto === 'At/below (rectum)') ? "en o por debajo del nivel del Take-Off Sigmoideo, confirmando la localización en el recto" : "por encima del Take-Off Sigmoideo, orientando a una neoplasia de sigma";
                 narrative += `. La lesión se sitúa ${textSto}. En sentido craneocaudal, su relación con la reflexión peritoneal anterior es: ${peritoneal.toLowerCase()}.\n\n`;
                 
                 narrative += `Extensión extramural y categoría T:\n`;
                 narrative += `El comportamiento y la invasión de las capas parietales definen una categoría clínica ${ct}. `;
                 if (ct === 'cT4b') {
-                    const checkedStructs = Array.from(document.querySelectorAll('input[name="t4b_struct"]:checked')).map(el => el.value === 'Pelvic organs' ? 'órganos pélvicos' : el.value === 'Pelvic floor/sidewall muscles' ? 'músculos del suelo/pared pélvica' : el.value === 'External anal sphincter' ? 'esfínter anal externo' : 'hueso');
-                    narrative += `Se constata afectación macroscópica directa de: ${checkedStructs.join(', ')}. `;
+                    const checkedStructs = Array.from(document.querySelectorAll('input[name="t4b_struct"]:checked')).map(el => {
+                        return el.value === 'Pelvic organs' ? 'órganos pélvicos' : el.value === 'Pelvic floor/sidewall muscles' ? 'músculos del suelo/pared pélvica' : el.value === 'External anal sphincter' ? 'esfínter anal externo' : 'hueso';
+                    });
+                    narrative += `Se constata afectación macroscópica directa de: ${checkedStructs.length > 0 ? checkedStructs.join(', ') : 'estructuras no especificadas'}. `;
                     if(document.getElementById('ct4b-custom-text').value) narrative += `Detalles de la invasión pélvica: ${document.getElementById('ct4b-custom-text').value}. `;
                 }
                 if (sphincter !== 'No' && sphincter !== t['rep-not-eval']) {
@@ -934,15 +939,15 @@
                 narrative += `Fascia Mesorrectal (FMR):\n`;
                 if (formData.get('mrf') === 'Yes') {
                     const mrfCauses = Array.from(document.querySelectorAll('input[name="mrf_cause"]:checked')).map(el => el.value === 'Primary tumour' ? 'tumor primario' : el.value === 'EMVI' ? 'EMVI' : 'ganglios/depósitos irregulares');
-                    narrative += `La fascia mesorrectal se encuentra comprometida (margen libre de tumor directo o estructuras de riesgo &le; 1 mm) a las ${document.getElementById('mrf-clock').value || '___'} en sentido horario, secundario a: ${mrfCauses.join(', ')}.\n\n`;
+                    narrative += `La fascia mesorrectal se encuentra comprometida (margen libre de tumor directo o estructuras de riesgo <= 1 mm) a las ${document.getElementById('mrf-clock').value || '___'} en sentido horario, secundario a: ${mrfCauses.join(', ')}.\n\n`;
                 } else {
                     narrative += `La fascia mesorrectal está preservada, objetivándose un margen de seguridad > 1 mm respecto al borde tumoral más avanzado, depósitos y canales venosos positivos.\n\n`;
                 }
 
                 narrative += `Estadiaje Ganglionar (Enfoque a nivel de paciente):\n`;
-                narrative += `- Compartimento mesorrectal: ${mesoNodes === 'Yes' ? 'Presencia de adenopatías sospechosas (' + document.getElementById('meso-nodes-text').value + ').' : 'Sin evidencias de adenopatías significativas.'}\n`;
-                narrative += `- Cadenas laterales pélvicas regionales: ${latNodes === 'Yes' ? 'Afectación ganglionar patológica detectada en: ' + document.getElementById('lat-nodes-text').value : 'No se identifican ganglios laterales sospechosos.'}\n`;
-                narrative += `- Depósitos tumorales (TDs): ${td === 'Yes' ? 'Imágenes compatibles con depósitos tumorales de contorno irregular adyacentes a vasos sanguíneos (' + document.getElementById('td-text').value + ').' : 'No se aprecian depósitos tumorales mesorrectales discretos.'}\n`;
+                narrative += `- Compartimento mesorrectal: ${mesoNodes === 'Yes' ? 'Presencia de adenopatías sospechosas (' + (document.getElementById('meso-nodes-text').value || 'verificado') + ').' : 'Sin evidencias de adenopatías significativas.'}\n`;
+                narrative += `- Cadenas laterales pélvicas regionales: ${latNodes === 'Yes' ? 'Afectación ganglionar patológica detectada en: ' + (document.getElementById('lat-nodes-text').value || 'especificada') : 'No se identifican ganglios laterales sospechosos.'}\n`;
+                narrative += `- Depósitos tumorales (TDs): ${td === 'Yes' ? 'Imágenes compatibles con depósitos tumorales de contorno irregular adyacentes a vasos sanguíneos (' + (document.getElementById('td-text').value || 'detectados') + ').' : 'No se aprecian depósitos tumorales mesorrectales discretos.'}\n`;
                 if (cmNodes === 'Yes') narrative += `- Estaciones no regionales (cM+): Se identifican adenopatías sospechosas en: ${document.getElementById('cm-nodes-text').value}.\n`;
                 narrative += `De acuerdo con los factores de riesgo integrados del paciente, la sospecha global de afectación ganglionar se clasifica como: ${cnEst}.\n\n`;
 
@@ -956,17 +961,19 @@
                 if (rawShape === 'Partly annular' && document.getElementById('shape-hours-from').value) {
                     narrative += ` que s'estén des de les ${document.getElementById('shape-hours-from').value} fins a les ${document.getElementById('shape-hours-to').value} en les agulles del rellotge`;
                 }
-                narrative += `. El tumor presents una longitud màxima de ${length || '___'} cm. El seu marge inferior es localitza a una distància de ${distArj || '___'} cm de la unió anorrectal`;
+                narrative += `. El tumor presenta una longitud màxima de ${length || '___'} cm. El seu marge inferior es localitza a una distància de ${distArj || '___'} cm de la unió anorrectal`;
                 if (distAv) narrative += ` i a ${distAv} cm del marge anal`;
                 
-                let textSto = (rawSto === 'At/below (rectum)') ? "en o per sota del nivell del Take-Off Sigmoïdal, confirmant la localització a recte" : "per sobre del Take-Off Sigmoïdal, orientant a una neoplàsia de sigma";
+                let textSto = (rawSto === 'At/below (rectum)') ? "en o per sota del nivell del Take-Off Sigmoïdal, confirmant la localització al recte" : "per sobre del Take-Off Sigmoïdal, orientant a una neoplàsia de sigma";
                 narrative += `. La lesió es situa ${textSto}. En sentit craniocaudal, la seva relació amb la reflexió peritoneal anterior és: ${peritoneal.toLowerCase()}.\n\n`;
                 
                 narrative += `Extensió extramural i categoria T:\n`;
                 narrative += `El comportament i la invasió de les capes parietals defineixen una categoria clínica ${ct}. `;
                 if (ct === 'cT4b') {
-                    const checkedStructs = Array.from(document.querySelectorAll('input[name="t4b_struct"]:checked')).map(el => el.value === 'Pelvic organs' ? 'òrgans pèlvics' : el.value === 'Pelvic floor/sidewall muscles' ? 'músculs del sòl/paret pèlvica' : el.value === 'External anal sphincter' ? 'esfínter anal extern' : 'os');
-                    narrative += `Es constata afectació macroscòpica directa de: ${checkedStructs.join(', ')}. `;
+                    const checkedStructs = Array.from(document.querySelectorAll('input[name="t4b_struct"]:checked')).map(el => {
+                        return el.value === 'Pelvic organs' ? 'òrgans pèlvics' : el.value === 'Pelvic floor/sidewall muscles' ? 'músculs del sòl/paret pèlvica' : el.value === 'External anal sphincter' ? 'esfínter anal extern' : 'os';
+                    });
+                    narrative += `Es constata afectació macroscòpica directa de: ${checkedStructs.length > 0 ? checkedStructs.join(', ') : 'estructures no especificades'}. `;
                     if(document.getElementById('ct4b-custom-text').value) narrative += `Detalls de la invasió pèlvica: ${document.getElementById('ct4b-custom-text').value}. `;
                 }
                 if (sphincter !== 'No' && sphincter !== t['rep-not-eval']) {
@@ -981,15 +988,15 @@
                 narrative += `Fàscia Mesorrectal (FMR):\n`;
                 if (formData.get('mrf') === 'Yes') {
                     const mrfCauses = Array.from(document.querySelectorAll('input[name="mrf_cause"]:checked')).map(el => el.value === 'Primary tumour' ? 'tumor primari' : el.value === 'EMVI' ? 'EMVI' : 'ganglis/dipòsits irregulars');
-                    narrative += `La fàscia mesorrectal es troba compromesa (marge lliure de tumor directe o estructures de risc &le; 1 mm) a les ${document.getElementById('mrf-clock').value || '___'} en sentit horari, secundari a: ${mrfCauses.join(', ')}.\n\n`;
+                    narrative += `La fàscia mesorrectal es troba compromesa (marge lliure de tumor directe o estructures de risc <= 1 mm) a les ${document.getElementById('mrf-clock').value || '___'} en sentit horari, secundari a: ${mrfCauses.join(', ')}.\n\n`;
                 } else {
                     narrative += `La fàscia mesorrectal està preservada, objectivant-se un marge de seguretat > 1 mm respecte al marge tumoral més avançat, dipòsits i canals venosos positius.\n\n`;
                 }
 
                 narrative += `Estadiatge Ganglionar (Enfocament a nivell de pacient):\n`;
-                narrative += `- Compartiment mesorrectal: ${mesoNodes === 'Yes' ? 'Presència d\'adenopaties sospitoses (' + document.getElementById('meso-nodes-text').value + ').' : 'Sense evidències d\'adenopaties significatives.'}\n`;
-                narrative += `- Cadenas laterals pèlviques regionals: ${latNodes === 'Yes' ? 'Afectació ganglionar patològica detectada a: ' + document.getElementById('lat-nodes-text').value : 'No s\'identifiquen ganglis laterals sospitosos.'}\n`;
-                narrative += `- Dipòsits tumorals (TDs): ${td === 'Yes' ? 'Imatges compatibles amb dipòsits tumorals de contorn irregular adjacents a vasos sanguinis (' + document.getElementById('td-text').value + ').' : 'No s\'aprecien dipòsits tumorals mesorrectals discrets.'}\n`;
+                narrative += `- Compartiment mesorrectal: ${mesoNodes === 'Yes' ? 'Presència d\'adenopaties sospitoses (' + (document.getElementById('meso-nodes-text').value || 'verificat') + ').' : 'Sense evidències d\'adenopaties significatives.'}\n`;
+                narrative += `- Cadenes laterals pèlviques regionals: ${latNodes === 'Yes' ? 'Afectació ganglionar patològica detectada a: ' + (document.getElementById('lat-nodes-text').value || 'especificada') : 'No s\'identifiquen ganglis laterals sospitosos.'}\n`;
+                narrative += `- Dipòsits tumorals (TDs): ${td === 'Yes' ? 'Imatges compatibles amb dipòsits tumorals de contorn irregular adjacents a vasos sanguinis (' + (document.getElementById('td-text').value || 'detectats') + ').' : 'No s\'aprecien dipòsits tumorals mesorrectals discrets.'}\n`;
                 if (cmNodes === 'Yes') narrative += `- Estacions no regionals (cM+): S'identifiquen adenopaties sospitoses a: ${document.getElementById('cm-nodes-text').value}.\n`;
                 narrative += `D'acord amb els factors de risc integrats del pacient, la sospita global d'afectació ganglionar es classifica com: ${cnEst}.\n\n`;
 
@@ -997,6 +1004,7 @@
                 narrative += `Conclusió:\n${conclusionText || 'Estadiatge local estructurat completat.'}`;
             } 
             else {
+                // ENGLISH
                 narrative = `RECTAL MRI REPORT FOR PRIMARY STAGING (ESGAR 2026)\n\n`;
                 narrative += `Local tumour characteristics:\n`;
                 narrative += `A rectal mass is identified, demonstrating a predominantly ${comp.toLowerCase()} composition and a ${shape.toLowerCase()} appearance`;
@@ -1028,7 +1036,7 @@
                 narrative += `Mesorectal Fascia (MRF):\n`;
                 if (formData.get('mrf') === 'Yes') {
                     const mrfCauses = Array.from(document.querySelectorAll('input[name="mrf_cause"]:checked')).map(el => el.value.toLowerCase());
-                    narrative += `The mesorectal fascia is involved (clear margin &le; 1 mm) at ${document.getElementById('mrf-clock').value || '___'} o'clock, mediated by: ${mrfCauses.join(', ')}.\n\n`;
+                    narrative += `The mesorectal fascia is involved (clear margin <= 1 mm) at ${document.getElementById('mrf-clock').value || '___'} o'clock, mediated by: ${mrfCauses.join(', ')}.\n\n`;
                 } else {
                     narrative += `The mesorectal fascia is clear, with a safety margin > 1 mm from the deepest primary tumor edge, deposits, or positive vascular channels.\n\n`;
                 }
